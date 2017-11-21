@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="MDMModelStoreContainer" CdmEntityContainer="MDMEntities">
+    <EntitySetMapping Name="Componente">
+      <EntityTypeMapping TypeName="MDMModel.Componente">
+        <MappingFragment StoreEntitySet="Componente">
+          <ScalarProperty Name="IdComponente" ColumnName="IdComponente" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="Peso" ColumnName="Peso" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Criterio">
+      <EntityTypeMapping TypeName="MDMModel.Criterio">
+        <MappingFragment StoreEntitySet="Criterio">
+          <ScalarProperty Name="IdCriterio" ColumnName="IdCriterio" />
+          <ScalarProperty Name="NombreCriterio" ColumnName="NombreCriterio" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="IdDimension" ColumnName="IdDimension" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Dimension">
+      <EntityTypeMapping TypeName="MDMModel.Dimension">
+        <MappingFragment StoreEntitySet="Dimension">
+          <ScalarProperty Name="IdDimension" ColumnName="IdDimension" />
+          <ScalarProperty Name="NombreDimension" ColumnName="NombreDimension" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="ValorEsperado" ColumnName="ValorEsperado" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Nivel">
+      <EntityTypeMapping TypeName="MDMModel.Nivel">
+        <MappingFragment StoreEntitySet="Nivel">
+          <ScalarProperty Name="IdNivel" ColumnName="IdNivel" />
+          <ScalarProperty Name="NombreNivel" ColumnName="NombreNivel" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Opcion">
+      <EntityTypeMapping TypeName="MDMModel.Opcion">
+        <MappingFragment StoreEntitySet="Opcion">
+          <ScalarProperty Name="IdOpcion" ColumnName="IdOpcion" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="IdPregunta" ColumnName="IdPregunta" />
+          <ScalarProperty Name="IdNivel" ColumnName="IdNivel" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Pregunta">
+      <EntityTypeMapping TypeName="MDMModel.Pregunta">
+        <MappingFragment StoreEntitySet="Pregunta">
+          <ScalarProperty Name="IdPregunta" ColumnName="IdPregunta" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="IdCriterio" ColumnName="IdCriterio" />
+          <ScalarProperty Name="IdComponente" ColumnName="IdComponente" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Respuesta">
+      <EntityTypeMapping TypeName="MDMModel.Respuesta">
+        <MappingFragment StoreEntitySet="Respuesta">
+          <ScalarProperty Name="ContVez" ColumnName="ContVez" />
+          <ScalarProperty Name="IdRespuesta" ColumnName="IdRespuesta" />
+          <ScalarProperty Name="IdOpcion" ColumnName="IdOpcion" />
+          <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="MDMModel.sysdiagrams">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Usuario">
+      <EntityTypeMapping TypeName="MDMModel.Usuario">
+        <MappingFragment StoreEntitySet="Usuario">
+          <ScalarProperty Name="NroEcuestasTerminadas" ColumnName="NroEcuestasTerminadas" />
+          <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+          <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
+          <ScalarProperty Name="TipoUsuario" ColumnName="TipoUsuario" />
+          <ScalarProperty Name="UsuarioIngreso" ColumnName="UsuarioIngreso" />
+          <ScalarProperty Name="Clave" ColumnName="Clave" />
+          <ScalarProperty Name="Entidad" ColumnName="Entidad" />
+          <ScalarProperty Name="Cargo" ColumnName="Cargo" />
+          <ScalarProperty Name="EncuestaTerminada" ColumnName="EncuestaTerminada" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionName="MDMModel.Store.ResultadoCriterio" FunctionImportName="ResultadoCriterio">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="MDMModel.ResultadoCriterio_Result">
+          <ScalarProperty Name="Criterio" ColumnName="Criterio" />
+          <ScalarProperty Name="Valor" ColumnName="Valor" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionName="MDMModel.Store.ResultadoEvaluacion" FunctionImportName="ResultadoEvaluacion">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="MDMModel.ResultadoEvaluacion_Result">
+          <ScalarProperty Name="Dimension" ColumnName="Dimension" />
+          <ScalarProperty Name="Valor" ColumnName="Valor" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="ResultadosHistoricos" FunctionName="MDMModel.Store.ResultadosHistoricos">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="MDMModel.ResultadosHistoricos_Result">
+          <ScalarProperty Name="Dimension" ColumnName="Dimension" />
+          <ScalarProperty Name="Valor" ColumnName="Valor" />
+          <ScalarProperty Name="Numero_Vez" ColumnName="Numero Vez" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

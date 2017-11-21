@@ -1,0 +1,83 @@
+﻿@model PagedList.IPagedList<MDM.Models.Pregunta>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Cuestionario";
+    ViewBag.liCuestionario = "active";
+    ViewBag.PreguntaAnterior = null;
+}
+<div class="col-md-12">
+    <h2 class="col-md-12"><b>Cuestionario</b></h2>
+</div>
+<div class="col-md-12 form-group">
+    <div class="pull-right">
+        <a id="reiniciar" href="@Url.Action("ReiniciarEncuesta")" class="btn btn-success">
+            <i class="fa fa-refresh"></i>&nbsp;Volver a Iniciar
+        </a>
+    </div>
+</div> 
+<div class="col-md-12">
+    <div class="progress progress progress-striped active">
+        <div class="progress-bar progress-bar-success" id="progressbar" style="width: 0%"><p id="porcentaje">@(ViewBag.Porcentaje) % de 100%  </p></div>
+    </div>
+</div>
+@foreach (var itemPregunta in Model)
+{
+    @Html.Partial("_CuestionarioPartial", itemPregunta)
+    ViewBag.PreguntaAnterior = itemPregunta;
+}
+<br />
+<div class="col-md-12">
+    <div class="col-md-6">
+        Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("Cuestionario", new { page }),
+        new PagedListRenderOptions()
+        {
+            LinkToFirstPageFormat = "<< Primera",
+            LinkToPreviousPageFormat = "< Anterior",
+            LinkToNextPageFormat = "Siguiente >",
+            LinkToLastPageFormat = "&Uacute;ltima >>",
+            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+            DisplayLinkToNextPage = PagedListDisplayMode.Always,
+            MaximumPageNumbersToDisplay = 10,
+            DisplayEllipsesWhenNotShowingAllPageNumbers = true
+        })
+    </div>
+    <div class="col-md-6">
+        <div class="pull-right">
+            <a id="enviar" href="@Url.Action("FinalizarEncuesta")" class="btn btn-success">
+               <i class="fa fa-send"></i>&nbsp;Enviar
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+        $("#enviar").hide();
+        if(@ViewBag.Porcentaje==100)
+            $("#enviar").show();
+        $("#progressbar").width(@ViewBag.Porcentaje + "%");
+        $(".rd").on("click", function () {
+            var idPregunta = $(this).attr("name");
+            var valuePregunta = $(this).attr("value");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GrabarRespuesta")',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ 'idPregunta': idPregunta, 'valuePregunta': valuePregunta }),
+                dataType: "json",
+                success: function (result)
+                {
+                    ModificaProgressBar(result);
+                    if(result=="100")
+                    {
+                        $("#enviar").show();
+                    }
+                }
+            });
+        });
+        function ModificaProgressBar(result)
+        {
+            $("#progressbar").width(result + "%");
+            $("#porcentaje").text(result+"% de 100%");
+        }
+</script>

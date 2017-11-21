@@ -1,0 +1,79 @@
+﻿@model MDM.Models.Pregunta
+@{ 
+    ViewBag.PreguntaActual = Model;
+}
+@if (ViewBag.PreguntaAnterior == null || ViewBag.PreguntaAnterior.Criterio.Dimension.IdDimension != Model.Criterio.Dimension.IdDimension)
+{
+    <div class="col-md-12">
+        <div class="box box-solid box-success">
+            <div class="box-header with-border">
+                <h3 class="box-title">@Model.Criterio.Dimension.NombreDimension</h3>
+            </div>
+            <div class="box-body no-padding">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Pregunta</th>
+                            <th>Opciones</th>
+                           <!--<th>NC</th>
+                            <th>CP</th>
+                            <th>C</th>--> 
+                        </tr>
+                    </thead>
+                    <tbody class="@("D"+Model.Criterio.Dimension.IdDimension)">
+                        <tr>
+                            <td>@Model.Descripcion</td>
+                            <td>
+                            @foreach(var itemOpcion in Model.Opcion)
+                            {
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" class="rd" name="@Model.IdPregunta" id="@(Model.IdPregunta.ToString()+itemOpcion.IdOpcion.ToString())" value="@itemOpcion.IdOpcion">
+                                        @itemOpcion.Descripcion
+                                    </label>
+                                </div>
+                            }
+                            </td>
+                        </tr>
+                    </tbody >
+                </table >
+                </div >
+            </div >
+        </div >
+}
+else
+{
+    <table>
+        <tbody>
+            <tr class="@("P"+Model.IdPregunta)">
+                <td>@Model.Descripcion</td>
+                <td>
+                @foreach (var itemOpcion in Model.Opcion)
+                {
+                    <div class="radio">
+                        <label>
+                            <input type="radio" class="rd" name="@Model.IdPregunta" id="@(Model.IdPregunta.ToString()+itemOpcion.IdOpcion.ToString())" value="@itemOpcion.IdOpcion">
+                            @itemOpcion.Descripcion
+                        </label>
+                    </div>
+                }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+     
+<script>
+    $(".D"+"@ViewBag.PreguntaActual.Criterio.Dimension.IdDimension").append($(".P"+"@ViewBag.PreguntaActual.IdPregunta"));
+    var idPregunta = "@Model.IdPregunta";
+    var Valor = "@Model.Valor";
+    if(Valor!="0")
+    {
+        $("#"+idPregunta+Valor).prop("checked",true);
+    }
+
+</script>
+             
+  
+
+                    

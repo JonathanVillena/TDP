@@ -1,0 +1,130 @@
+﻿@model List<MDM.Models.DimensionResultado>
+@{
+    ViewBag.liResultadoEvaluacion = "active";
+    ViewBag.Title = "Resultado de la Evaluación";
+}
+
+ 
+
+<h2 class="col-md-12"><b>Resultado de la Evaluación</b></h2>
+
+<style>
+    #chartdiv {
+        width: 100%;
+        height: 500px;
+    }
+    table, th, td {
+    border: 1px solid black !important;
+    text-align:center !important; 
+    vertical-align:middle !important;
+    }
+</style>
+
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/radar.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+<!-- Chart code -->
+<script>
+    var chart = AmCharts.makeChart( "chartdiv", {
+        "type": "radar",
+        "theme": "light",
+        "titles": [ {
+            "text": "Resultado MDM",
+            "size": 16
+        } ],
+        "legend": {
+            "position":"right",
+            "marginRight":100,
+            "autoMargins":false
+        },
+        "dataProvider": @Html.Raw(ViewBag.JsonData),
+        "valueAxes": [ {
+            "id":"v1",
+            "axisTitleOffset": 20,
+            "minimum": 0,
+            "maximum":5,
+            "axisAlpha": 0.15
+        } ],
+        "startDuration": 2,
+        "graphs": [ {
+            "title":"Resultado",
+            "valueAxis": "v1",
+            "balloonText": "[[value]]",
+            "bullet": "round",
+            "lineThickness": 2,
+            "valueField": "Valor"
+        },  
+        /*{
+            "title":"Resultado Esperado",
+            "valueAxis": "v1",
+            "balloonText": "[[value]]",
+            "bullet": "round",
+            "lineThickness": 2,
+            "valueField": "ValorEsperado"
+        }*/],
+        "categoryField": "Dimension",
+        "export": {
+            "enabled": true
+        }
+    } );
+</script>
+
+<!-- HTML -->
+<div class="col-md-12">
+    <div id="chartdiv"></div>	
+</div>
+<div class="col-md-12">
+    <div class="box box-success collapsed-box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Detalles de la evaluación</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+        </div>
+   
+
+        <div class="box-body" style="display: none;">
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="info" class="font-weight-bold">
+                        <th >Dimensión</th>
+                        <th>Criterio</th>
+                        <th>Resultado</th>
+                        <th >Promedio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var obj in Model)
+                    {
+                    <tr>
+                        <td rowspan="@obj.NumeroCriterios" valign="middle" class="success">@obj.Dimension</td>
+                        <td >@obj.ListaCriterio.FirstOrDefault().Criterio</td>
+                        <td >@obj.ListaCriterio.FirstOrDefault().ValorCriterio</td>
+                        <td rowspan="@obj.NumeroCriterios" >@Math.Round(Convert.ToDouble(obj.ValorDimension),2)</td>
+                    </tr>
+                        int i= 1;
+                        foreach (var objCriterio in obj.ListaCriterio)
+                        {
+                            if (i!=1)
+                            {
+                            <tr>
+                                <td>@objCriterio.Criterio</td>
+                                <td >@Math.Round(Convert.ToDouble(objCriterio.ValorCriterio),2)</td>
+                            </tr>
+                            }
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+
+    </div>
+</div>

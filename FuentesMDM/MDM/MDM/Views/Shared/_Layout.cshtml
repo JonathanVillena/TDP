@@ -1,0 +1,135 @@
+﻿@{
+    String strUsername = String.Empty;
+    String strCargo = String.Empty;
+    if (Session["objUsuario"] != null)
+    { strUsername = ((MDM.Models.Usuario)Session["objUsuario"]).NombreUsuario;
+        strCargo = ((MDM.Models.Usuario)Session["objUsuario"]).Cargo;
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Herramienta MDM</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    @Styles.Render("~/bundles/bootstrap")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    @Styles.Render("~/bundles/dist")
+    @Scripts.Render("~/bundles/jquery")
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper" style="height: auto;">
+        <header class="main-header">
+            <a href="#" class="logo">
+                <span class="logo-mini"><b>MDM</b></span>
+                <span class="logo-lg">Herramienta de Evaluación MDM</span>
+            </a>
+            <nav class="navbar navbar-static-top">
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <span class="hidden-xs">@strUsername</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="user-header">
+                                    <p>
+                                        @strUsername
+                                        <small>@strCargo</small>
+                                    </p>
+                                </li>
+                                <li class="user-footer">
+                                    <div class="pull-right">
+                                        <a href="@Url.Action("CerrarSesion")" class="btn btn-default btn-flat">Salir</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="main-sidebar">
+            <section class="sidebar" style="height: auto;">
+                <ul class="sidebar-menu">
+                    <li class="header">MENÚ</li>
+                    <li class="@ViewBag.liInicio"><a href="@Url.Action("Inicio")"><i class="fa fa-circle-o text-green"></i> <span>INICIO</span></a></li>
+                    <li class="@ViewBag.liCuestionario"><a href="@Url.Action("Cuestionario")"><i class="fa fa-circle-o text-red"></i> <span>CUESTIONARIO</span></a></li>
+                    <li class="@ViewBag.liResultadoEvaluacion"><a href="@Url.Action("ResultadoEvaluacion")"><i class="fa fa-circle-o text-yellow"></i> <span>ULTIMO RESULTADO</span></a></li>
+                    <li class="@ViewBag.liHistorialRespuestas"><a href="@Url.Action("HistorialRespuestas")"><i class="fa fa-circle-o text-red"></i> <span>HISTORAL DE RESPUESTAS</span></a></li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-circle-o text-blue"></i> <span>INFORMACIÓN</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="@ViewBag.liInformacion"><a href="@Url.Action("Informacion")"><i class="fa fa-circle-o"></i>¿QUÉ ES MDM?</a></li>
+                            <li class="@ViewBag.liInformacionNiveles"><a href="@Url.Action("InformacionNiveles")"><i class="fa fa-circle-o"></i> NIVELES</a></li>
+                            <li class="@ViewBag.liInformacionDimensiones"><a href="@Url.Action("InformacionDimensiones")"><i class="fa fa-circle-o"></i> DIMENSIONES</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <div class="content-wrapper" style="min-height: 916px;">
+            <section class="content-header">
+                <ol class="breadcrumb">
+                    <li><a href="#"><i class="fa fa-dashboard"></i> @ViewBag.Title</a></li>
+                    <li class="active">@ViewBag.SubTitle</li>
+                </ol>
+            </section>
+            <section class="content">
+                <div class="row">
+                    @RenderBody()
+                </div>
+            </section>
+        </div>
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 2.0
+            </div>
+            <strong>Copyright © 2017 <a href="#">MDM</a>.</strong> All rights
+            reserved.
+        </footer>
+        <div class="control-sidebar-bg" style="position: fixed; height: auto;"></div>
+    </div>
+    <div id="dialog-confirm" title="¿Reiniciar el cuestionario?" hidden>
+        <p>
+            <span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;">
+            </span>Todas las respuestas serán eliminadas.¿Desea continuar?
+        </p>
+    </div>
+    @Scripts.Render("~/bundles/bootstrap/Script")
+    <script src="~/Content/dist/adminlte.min.js"></script>
+    <script>
+        $("#reiniciar").on("click", function (e) {
+            var link = this;
+
+            e.preventDefault();
+
+            $("#dialog-confirm").dialog({
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                buttons: {
+                    "Aceptar": function () {
+                        window.location = link.href;
+                    },
+                    "Cancelar": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

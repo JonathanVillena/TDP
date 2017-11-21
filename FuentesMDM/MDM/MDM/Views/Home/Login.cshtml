@@ -1,0 +1,33 @@
+﻿@model MDM.ViewModel.LoginViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Master Data Management</title>
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/style.css")" />
+</head>
+<body>
+    <div class="container">
+        <section id="content">
+            <form method="post" action="@Url.Action("Login")">
+                <h1>Login MDM</h1>
+                <div>
+                    @Html.TextBoxFor(x => x.UsuarioIngreso, new { placeholder = "Username", required = "", id = "username" })
+                </div>
+                <div>
+                    @Html.PasswordFor(x=>x.Clave, new { placeholder = "Password" ,required = "" ,id = "password" })
+                </div>
+                <div>
+                    <input type="submit" value="Log in"/>
+                </div>
+            </form><!-- form -->
+            <!--<div class="button">
+                <a href="#">Download source file</a>
+            </div> button -->
+        </section><!-- content -->
+    </div><!-- container -->
+</body>
+</html>

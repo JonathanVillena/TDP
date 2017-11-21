@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MDMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <ComplexType Name="ResultadoCriterio_Result">
+    <Property Name="Criterio" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Valor" Type="Decimal" Precision="38" Scale="2" />
+  </ComplexType>
+  <ComplexType Name="ResultadoEvaluacion_Result">
+    <Property Name="Dimension" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Valor" Type="Decimal" Precision="38" Scale="6" />
+  </ComplexType>
+  <EntityType Name="Componente">
+    <Key>
+      <PropertyRef Name="IdComponente" />
+    </Key>
+    <Property Name="IdComponente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Peso" Type="Decimal" Precision="18" Scale="2" />
+    <NavigationProperty Name="Pregunta" Relationship="Self.FK_Pregunta_Componente" FromRole="Componente" ToRole="Pregunta" />
+  </EntityType>
+  <EntityType Name="Criterio">
+    <Key>
+      <PropertyRef Name="IdCriterio" />
+    </Key>
+    <Property Name="IdCriterio" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombreCriterio" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="IdDimension" Type="Int32" />
+    <NavigationProperty Name="Dimension" Relationship="Self.FK_Criterio_Dimension" FromRole="Criterio" ToRole="Dimension" />
+    <NavigationProperty Name="Pregunta" Relationship="Self.FK_Pregunta_Criterio" FromRole="Criterio" ToRole="Pregunta" />
+  </EntityType>
+  <EntityType Name="Dimension">
+    <Key>
+      <PropertyRef Name="IdDimension" />
+    </Key>
+    <Property Name="IdDimension" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombreDimension" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="ValorEsperado" Type="Decimal" Precision="18" Scale="2" />
+    <NavigationProperty Name="Criterio" Relationship="Self.FK_Criterio_Dimension" FromRole="Dimension" ToRole="Criterio" />
+  </EntityType>
+  <EntityType Name="Nivel">
+    <Key>
+      <PropertyRef Name="IdNivel" />
+    </Key>
+    <Property Name="IdNivel" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombreNivel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Opcion" Relationship="Self.FK_Opcion_Nivel" FromRole="Nivel" ToRole="Opcion" />
+  </EntityType>
+  <EntityType Name="Opcion">
+    <Key>
+      <PropertyRef Name="IdOpcion" />
+    </Key>
+    <Property Name="IdOpcion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="IdPregunta" Type="Int32" />
+    <Property Name="IdNivel" Type="Int32" />
+    <NavigationProperty Name="Nivel" Relationship="Self.FK_Opcion_Nivel" FromRole="Opcion" ToRole="Nivel" />
+    <NavigationProperty Name="Pregunta" Relationship="Self.FK_Opcion_Pregunta" FromRole="Opcion" ToRole="Pregunta" />
+    <NavigationProperty Name="Respuesta" Relationship="Self.FK_Respuesta_Opcion" FromRole="Opcion" ToRole="Respuesta" />
+  </EntityType>
+  <EntityType Name="Pregunta">
+    <Key>
+      <PropertyRef Name="IdPregunta" />
+    </Key>
+    <Property Name="IdPregunta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="IdCriterio" Type="Int32" />
+    <Property Name="IdComponente" Type="Int32" />
+    <NavigationProperty Name="Componente" Relationship="Self.FK_Pregunta_Componente" FromRole="Pregunta" ToRole="Componente" />
+    <NavigationProperty Name="Criterio" Relationship="Self.FK_Pregunta_Criterio" FromRole="Pregunta" ToRole="Criterio" />
+    <NavigationProperty Name="Opcion" Relationship="Self.FK_Opcion_Pregunta" FromRole="Pregunta" ToRole="Opcion" />
+  </EntityType>
+  <EntityType Name="Respuesta">
+    <Key>
+      <PropertyRef Name="IdRespuesta" />
+    </Key>
+    <Property Name="IdRespuesta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdOpcion" Type="Int32" />
+    <Property Name="IdUsuario" Type="Int32" />
+    <NavigationProperty Name="Opcion" Relationship="Self.FK_Respuesta_Opcion" FromRole="Respuesta" ToRole="Opcion" />
+    <NavigationProperty Name="Usuario" Relationship="Self.FK_Respuesta_Usuario" FromRole="Respuesta" ToRole="Usuario" />
+    <Property Name="ContVez" Type="Int32" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Usuario">
+    <Key>
+      <PropertyRef Name="IdUsuario" />
+    </Key>
+    <Property Name="IdUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombreUsuario" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="TipoUsuario" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="UsuarioIngreso" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Clave" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Entidad" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Cargo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="EncuestaTerminada" Type="Boolean" />
+    <NavigationProperty Name="Respuesta" Relationship="Self.FK_Respuesta_Usuario" FromRole="Usuario" ToRole="Respuesta" />
+    <Property Name="NroEcuestasTerminadas" Type="Int32" />
+  </EntityType>
+  <Association Name="FK_Pregunta_Componente">
+    <End Role="Componente" Type="Self.Componente" Multiplicity="0..1" />
+    <End Role="Pregunta" Type="Self.Pregunta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Componente">
+        <PropertyRef Name="IdComponente" />
+      </Principal>
+      <Dependent Role="Pregunta">
+        <PropertyRef Name="IdComponente" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Criterio_Dimension">
+    <End Role="Dimension" Type="Self.Dimension" Multiplicity="0..1" />
+    <End Role="Criterio" Type="Self.Criterio" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Dimension">
+        <PropertyRef Name="IdDimension" />
+      </Principal>
+      <Dependent Role="Criterio">
+        <PropertyRef Name="IdDimension" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Pregunta_Criterio">
+    <End Role="Criterio" Type="Self.Criterio" Multiplicity="0..1" />
+    <End Role="Pregunta" Type="Self.Pregunta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Criterio">
+        <PropertyRef Name="IdCriterio" />
+      </Principal>
+      <Dependent Role="Pregunta">
+        <PropertyRef Name="IdCriterio" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Opcion_Nivel">
+    <End Role="Nivel" Type="Self.Nivel" Multiplicity="0..1" />
+    <End Role="Opcion" Type="Self.Opcion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Nivel">
+        <PropertyRef Name="IdNivel" />
+      </Principal>
+      <Dependent Role="Opcion">
+        <PropertyRef Name="IdNivel" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Opcion_Pregunta">
+    <End Role="Pregunta" Type="Self.Pregunta" Multiplicity="0..1" />
+    <End Role="Opcion" Type="Self.Opcion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pregunta">
+        <PropertyRef Name="IdPregunta" />
+      </Principal>
+      <Dependent Role="Opcion">
+        <PropertyRef Name="IdPregunta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Respuesta_Opcion">
+    <End Role="Opcion" Type="Self.Opcion" Multiplicity="0..1" />
+    <End Role="Respuesta" Type="Self.Respuesta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Opcion">
+        <PropertyRef Name="IdOpcion" />
+      </Principal>
+      <Dependent Role="Respuesta">
+        <PropertyRef Name="IdOpcion" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Respuesta_Usuario">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+    <End Role="Respuesta" Type="Self.Respuesta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="IdUsuario" />
+      </Principal>
+      <Dependent Role="Respuesta">
+        <PropertyRef Name="IdUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="MDMEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Componente" EntityType="Self.Componente" />
+    <EntitySet Name="Criterio" EntityType="Self.Criterio" />
+    <EntitySet Name="Dimension" EntityType="Self.Dimension" />
+    <EntitySet Name="Nivel" EntityType="Self.Nivel" />
+    <EntitySet Name="Opcion" EntityType="Self.Opcion" />
+    <EntitySet Name="Pregunta" EntityType="Self.Pregunta" />
+    <EntitySet Name="Respuesta" EntityType="Self.Respuesta" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="Usuario" EntityType="Self.Usuario" />
+    <AssociationSet Name="FK_Pregunta_Componente" Association="Self.FK_Pregunta_Componente">
+      <End Role="Componente" EntitySet="Componente" />
+      <End Role="Pregunta" EntitySet="Pregunta" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Criterio_Dimension" Association="Self.FK_Criterio_Dimension">
+      <End Role="Dimension" EntitySet="Dimension" />
+      <End Role="Criterio" EntitySet="Criterio" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Pregunta_Criterio" Association="Self.FK_Pregunta_Criterio">
+      <End Role="Criterio" EntitySet="Criterio" />
+      <End Role="Pregunta" EntitySet="Pregunta" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Opcion_Nivel" Association="Self.FK_Opcion_Nivel">
+      <End Role="Nivel" EntitySet="Nivel" />
+      <End Role="Opcion" EntitySet="Opcion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Opcion_Pregunta" Association="Self.FK_Opcion_Pregunta">
+      <End Role="Pregunta" EntitySet="Pregunta" />
+      <End Role="Opcion" EntitySet="Opcion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Respuesta_Opcion" Association="Self.FK_Respuesta_Opcion">
+      <End Role="Opcion" EntitySet="Opcion" />
+      <End Role="Respuesta" EntitySet="Respuesta" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Respuesta_Usuario" Association="Self.FK_Respuesta_Usuario">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="Respuesta" EntitySet="Respuesta" />
+    </AssociationSet>
+    <FunctionImport Name="ResultadoCriterio" IsComposable="true" ReturnType="Collection(MDMModel.ResultadoCriterio_Result)">
+      <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
+      <Parameter Name="NumVez" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="ResultadoEvaluacion" IsComposable="true" ReturnType="Collection(MDMModel.ResultadoEvaluacion_Result)">
+      <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
+      <Parameter Name="NumVez" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="ResultadosHistoricos" IsComposable="true" ReturnType="Collection(MDMModel.ResultadosHistoricos_Result)">
+      <Parameter Name="idUsuaruio" Mode="In" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="ResultadosHistoricos_Result">
+    <Property Type="String" Name="Dimension" Nullable="true" MaxLength="255" />
+    <Property Type="Decimal" Name="Valor" Nullable="true" Precision="38" Scale="6" />
+    <Property Type="Int32" Name="Numero_Vez" Nullable="true" />
+  </ComplexType>
+</Schema>
